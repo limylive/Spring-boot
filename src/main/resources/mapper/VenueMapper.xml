@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mtpiao.dao.VenueDao">
+	<resultMap type="com.mtpiao.entity.Venue" id="venue">
+		<id property="vid" column="v_id" />
+		<result property="vcity" column="v_city" />
+		<result property="vname" column="v_name" />
+		<result property="vimg" column="v_img" />
+		<result property="vaddress" column="v_address" />
+	</resultMap>
+
+<select id="queryAllVenueCity" resultMap="venue">
+select DISTINCT v_city from venue 
+</select>
+<select id="queryAllVenue" resultMap="venue">
+select *  from venue 
+</select>
+
+
+
+</mapper>

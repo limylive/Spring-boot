@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mtpiao.dao.ShoppingDao">
+		<resultMap type="com.mtpiao.entity.Venue" id="v">
+		<id property="vid" column="v_id"/>
+		<result property="vcity" column="v_city"/>
+		<result property="vname" column="v_name"/>
+		<result property="vimg" column="v_img"/>
+		<result property="vaddress" column="v_address"/>
+		
+		
+	<collection property="shopping" resultMap="sp" autoMapping="true"></collection>
+	
+	</resultMap>
+	   
+	   	
+	   <resultMap type="com.mtpiao.entity.TicketInfo" id="tik">
+	   		<id property="tid" column="t_id"/>
+			<result property="tname" column="t_name"/>
+			<result property="tprice" column="t_price"/>
+			<result property="timg" column="t_img"/>
+			<result property="ttype" column="t_type"/>
+			<result property="tsinger" column="t_singer"/>
+			<result property="tshowTime" column="t_showTime"/>
+			<result property="tnum" column="t_num"/>
+			<result property="tvenue" column="t_venue"/>
+		
+			
+			<collection property="shopping" resultMap="sp" autoMapping="true"></collection>
+	   </resultMap>
+	   
+
+		
+	<resultMap type="com.mtpiao.entity.Shopping" id="sp">
+		<id property="sid" column="s_id"/>
+		<result property="suid" column="s_uid"/>
+		<result property="stid" column="s_tid"/>
+		<result property="stime" column="s_time"/>
+		<result property="snumber" column="s_number"/>
+		<association property="ticketinfo" resultMap="tik" autoMapping="true"></association>
+		<association property="venue" resultMap="v" autoMapping="true" ></association>
+	
+	</resultMap>  
+	<select id="findInShopping" parameterType="shopping" resultMap="sp">
+	select * from shopping where s_uid=#{suid} and s_tid =#{stid}
+	</select>
+	
+	<update id="updateShoppingNum" parameterType="shopping">
+	update shopping set s_number =s_number+1 where s_tid=#{stid} and s_uid =#{suid}
+	</update>
+<insert id="addshopping">
+	insert into shopping(s_uid,s_tid,s_time,s_number)values(#{suid},#{stid},now(),#{snumber})
+</insert>
+<select id="list" parameterType="java.lang.Integer" resultMap="sp" >
+SELECT * FROM venue v ,ticketinfo tik ,shopping sp WHERE tik.`t_venue` =v.`v_id` AND sp.`s_tid`=tik.`t_id` AND sp.`s_uid`=#{id}
+<!-- SELECT * FROM users u,ticketinfo tik,shopping sp WHERE u.`u_id`=sp.`s_uid` AND tik.`t_id`=sp.`s_tid` AND u.`u_id`=#{id} -->	
+</select>
+
+<delete id="deleteBySid">
+	delete from shopping where s_id=#{sid}
+</delete>
+
+<update id="prominus" parameterType="int">
+		update shopping set s_number=s_number-1 where  s_id=#{sid} and s_uid =#{suid}
+	</update>
+	<update id="proplus" parameterType="int">
+		update shopping set s_number=s_number+1 where  s_id=#{sid} and s_uid =#{suid}
+	</update>
+	<!-- 清空购物车 -->
+<delete id="deleteAll" parameterType="int">
+DELETE FROM shopping WHERE s_uid=#{suid}
+</delete>
+</mapper>

@@ -1,0 +1,44 @@
+#使用yml的配置方式，看起来结构更简单一些
+#服务器端口
+server:
+  port: 8888
+
+
+#Spring配置数据库连接
+spring:
+  mvc:
+   #配置视图解析器    view:      prefix: /
+      suffix: .jsp
+ 
+  #mysql数据库库配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/mtpiaodb?useSSL=false&serverTimezone=UTC
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #配置数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+  #redis配置
+  redis:
+    #配置使用的数据库索引
+    database: 0
+    #Redis主机地址
+    host: 127.0.0.1
+    #端口
+    port: 6379
+    password: 
+
+  #热部署的有关配置
+  thymeleaf:    cache: true
+  devtools:    restart:      enabled: true
+      additional-paths: src/main/java
+ 
+  #配置springboot访问静态资源
+  freemarker:    template-loader-path: /templates
+  
+#mybatis配置
+mybatis:
+  type-aliases-package: com.mtpiao.entity
+  mapper-locations: classpath:mapper/*.xml
+
+  

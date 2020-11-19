@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mtpiao.dao.UsersDao">
+		<resultMap type="com.mtpiao.entity.Users" id="users">
+		<id property="uid" column="u_id"/>
+		<result property="uname" column="u_name"/>
+		<result property="upwd" column="u_pwd"/>
+		<result property="urname" column="u_rname"/>
+		<result property="usex" column="u_sex"/>
+		<result property="utel" column="u_tel"/>
+		<result property="ubirthday" column="u_birthday"/>
+		</resultMap>
+
+<!-- 查询一个用户 -->
+<select id="queryOneUser" resultMap="users" parameterType="users">
+	select * from users where u_name=#{uname} 
+</select>
+
+
+<!-- 用户登录语句 -->
+<select id="login" resultMap="users" parameterType="users">
+	select * from users where u_name=#{uname} and u_pwd=#{upwd}
+</select>
+
+<!-- 用户注册 -->
+<insert id="addUser" parameterType="users">
+insert into users(u_name,u_pwd) values(#{uname},#{upwd})
+</insert>
+
+</mapper>

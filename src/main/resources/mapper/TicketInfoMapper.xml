@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mtpiao.dao.TicketInfoDao">
+	<resultMap type="com.mtpiao.entity.TicketInfo" id="ticketInfo">
+		<id property="tid" column="t_id" />
+		<result property="tname" column="t_name" />
+		<result property="tprice" column="t_price" />
+		<result property="timg" column="t_img" />
+		<result property="ttype" column="t_type" />
+		<result property="tsinger" column="t_singer" />
+		<result property="tshowTime" column="t_showTime" />
+		<result property="tnum" column="t_num" />
+		<result property="tvenue" column="t_venue" />
+		<association property="venue" javaType="Venue" resultMap="com.mtpiao.dao.VenueDao.venue">
+		<!-- 直接引用venueMapper.xml中的resultMap -->
+		</association>
+
+	</resultMap>
+ <select id="queryAllType" resultMap="ticketInfo">
+ select DISTINCT t_type from ticketinfo 
+ </select>
+ 
+ 
+	<!-- 查询全部的票务信息用于首页展示，在首页只展示图片，场馆名称，演出时间，演出者 -->
+	<select id="queryAllTAndVIndex" resultMap="ticketInfo">
+SELECT * FROM ticketinfo t JOIN venue v ON t.t_venue=v.v_id 
+	</select>
+
+ <!-- 根据城市查询票务信息 -->
+ 	<select id="queryTicketByCity" parameterType="String" resultMap="ticketInfo">
+SELECT * FROM ticketinfo t JOIN venue v ON t.t_venue=v.v_id  where v_city=#{vcity}
+ 	</select>
+ <!-- 根据类型查询票务信息 -->
+ 	<select id="queryTicketByType" parameterType="String" resultMap="ticketInfo">
+SELECT * FROM ticketinfo t JOIN venue v ON t.t_venue=v.v_id  where t_type=#{ttype}
+ 	</select>
+ <select id="findById" resultMap="ticketInfo" >
+		SELECT * FROM ticketinfo t JOIN venue v ON t.t_venue=v.v_id  WHERE t.`t_id`=#{tid}
+	</select>
+</mapper>
